@@ -18,7 +18,7 @@ func Worker(workerId int, jobs <-chan []byte, stateReadChannel chan ReadOp, stat
 	go ProcessData(processChannel, stateReadChannel, stateWriteChannel)
 
 	for job := range jobs {
-		fmt.Println("-------------", workerId, "] WORKER DISPATCHING : ", string(job))
+		fmt.Println("------------- WORKER [", workerId, "] DISPATCHING : ", string(job))
 		message := string(job)
 		message = message + fmt.Sprintf(" via Worker: %d", workerId)
 		processChannel <- []byte(message)
@@ -26,6 +26,6 @@ func Worker(workerId int, jobs <-chan []byte, stateReadChannel chan ReadOp, stat
 	}
 
 	close(processChannel)
-	fmt.Println(" ################ WORKER ", workerId, " processed ", counter, "jobs  ###############")
+	fmt.Println(" ################ WORKER [", workerId, "] processed ", counter, "jobs  ###############")
 
 }
