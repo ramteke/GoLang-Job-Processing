@@ -10,12 +10,12 @@ type State struct {
 	counter    int
 }
 
-func Worker(workerId int, jobs <-chan []byte) {
+func Worker(workerId int, jobs <-chan []byte, stateReadChannel chan ReadOp, stateWriteChannel chan WriteOp) {
 	fmt.Println("## WORKER: Created : ", workerId)
 	counter := 0
 
 	processChannel := make(chan []byte, 1)
-	go ProcessData(processChannel)
+	go ProcessData(processChannel, stateReadChannel, stateWriteChannel)
 
 	for job := range jobs {
 		fmt.Println("-------------", workerId, "] WORKER DISPATCHING : ", string(job))
